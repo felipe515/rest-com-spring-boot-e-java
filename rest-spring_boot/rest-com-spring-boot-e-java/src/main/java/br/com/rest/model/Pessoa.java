@@ -76,7 +76,6 @@ public class Pessoa implements Serializable{
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
-/*
 	@Override
 	public int hashCode() {
 		return Objects.hash(endereco, id, nome, sexo, sobrenome);
@@ -98,7 +97,7 @@ public class Pessoa implements Serializable{
 
 	
 	
-	*/
+	/*
 
 	@Override
 	public int hashCode() {
@@ -150,5 +149,6 @@ public class Pessoa implements Serializable{
 	}
 	
 	
+ */
 	
 }

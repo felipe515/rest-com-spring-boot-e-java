@@ -8,12 +8,12 @@ public class RequiredObjectIsNullFoundException extends RuntimeException{
 	
 	private static final long serialVersionUID = 1L; 
 
-	public RequiredObjectIsNullFoundException(String ex){
-		super(ex);
-	}
-	
 	public RequiredObjectIsNullFoundException(){
 		super("Não e permitido persistir um objeto nulo!");
+	}
+	
+	public RequiredObjectIsNullFoundException(String ex){
+		super(ex);
 	}
 	
 }

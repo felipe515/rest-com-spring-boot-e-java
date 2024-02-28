@@ -1,7 +1,6 @@
 package br.com.rest.integrationtests.swagger;
 
 import static io.restassured.RestAssured.given;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,7 @@ import br.com.rest.integrationtests.testcontainers.AbstractIntegrationTest;
 public class SwaggerIntegrationTest extends AbstractIntegrationTest{
 
 	@Test
-	void shoudDisplaySwaggerUiPage() {
+	public void shoudDisplaySwaggerUiPage() {
 		var content = 
 				given()
 					.basePath("/swagger-ui/index.html")

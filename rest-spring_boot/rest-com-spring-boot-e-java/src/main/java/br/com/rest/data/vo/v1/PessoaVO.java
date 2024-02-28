@@ -20,11 +20,11 @@ public class PessoaVO extends RepresentationModel<PessoaVO> implements Serializa
 	@Mapping("id")
 	private Long key;
 	
-	@JsonProperty("primeiro_nome")
+	//@JsonProperty("primeiro_nome")
 	private String nome;
 	private String sobrenome;
 	
-	@JsonIgnore //para ocultar no postman
+	//@JsonIgnore //para ocultar no postman
 	private String endereco;
 	private String sexo;
 	

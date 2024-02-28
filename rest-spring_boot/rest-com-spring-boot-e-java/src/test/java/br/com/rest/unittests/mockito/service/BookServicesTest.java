@@ -1,4 +1,4 @@
-package br.com.rest.unittests.mockitoservice;
+package br.com.rest.unittests.mockito.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -52,8 +52,8 @@ class BookServicesTest {
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertNotNull(result.getLinks());
-		System.out.println(result.toString());
-		assertTrue(result.toString().contains("links: [</book/1>;rel=\"self\"]"));
+		
+		assertTrue(result.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertEquals("Author Test1", result.getAuthor());
 		assertEquals("Title Test1", result.getTitle());
 		assertEquals(25D, result.getPrice());
@@ -74,11 +74,12 @@ class BookServicesTest {
 		when(repository.save(entity)).thenReturn(persisted);
 		
 		var result = service.criar(vo);
+		
 		assertNotNull(result);
 		assertNotNull(result.getId());
 		assertNotNull(result.getLinks());
 		
-		assertTrue(result.toString().contains("links: [</book/1>;rel=\"self\"]"));
+		assertTrue(result.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertEquals("Author Test1", result.getAuthor());
 		assertEquals("Title Test1", result.getTitle());
 		assertEquals(25D, result.getPrice());
@@ -119,7 +120,7 @@ class BookServicesTest {
 		assertNotNull(result.getId());
 		assertNotNull(result.getLinks());
 		
-		assertTrue(result.toString().contains("links: [</pessoa/1>;rel=\"self\"]"));
+		assertTrue(result.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertEquals("Author Test1", result.getAuthor());
 		assertEquals("Title Test1", result.getTitle());
 		assertEquals(25D, result.getPrice());
@@ -127,7 +128,7 @@ class BookServicesTest {
 	}
 
 	@Test
-	void testAtualizarComPessoaNulo() {
+	void testAtualizarComBookNulo() {
 		
 		Exception exception = assertThrows(RequiredObjectIsNullFoundException.class, () ->{service.atualizar(null);});
 		
@@ -166,11 +167,11 @@ class BookServicesTest {
 		assertNotNull(primeiroBook.getId());
 		assertNotNull(primeiroBook.getLinks());
 		
-		assertTrue(primeiroBook.toString().contains("links: [</book/1>;rel=\"self\"]"));
+		assertTrue(primeiroBook.toString().contains("links: [</api/book/v1/1>;rel=\"self\"]"));
 		assertEquals("Author Test1", primeiroBook.getAuthor());
 		assertEquals("Title Test1", primeiroBook.getTitle());
 		assertEquals(25D, primeiroBook.getPrice());
-		assertEquals("Date", primeiroBook.getLaunchDate());
+		assertNotNull(primeiroBook.getLaunchDate());
 		
 		var quartoBook = book.get(4);
 		
@@ -178,11 +179,11 @@ class BookServicesTest {
 		assertNotNull(quartoBook.getId());
 		assertNotNull(quartoBook.getLinks());
 		
-		assertTrue(quartoBook.toString().contains("links: [</book/4>;rel=\"self\"]"));
-		assertEquals("Author Test1", quartoBook.getAuthor());
-		assertEquals("Title Test1", quartoBook.getTitle());
+		assertTrue(quartoBook.toString().contains("links: [</api/book/v1/4>;rel=\"self\"]"));
+		assertEquals("Author Test4", quartoBook.getAuthor());
+		assertEquals("Title Test4", quartoBook.getTitle());
 		assertEquals(25D, quartoBook.getPrice());
-		assertEquals("Date", quartoBook.getLaunchDate());
+		assertNotNull(quartoBook.getLaunchDate());
 		
 		var setimoBook = book.get(7);
 		
@@ -190,11 +191,11 @@ class BookServicesTest {
 		assertNotNull(setimoBook.getId());
 		assertNotNull(setimoBook.getLinks());
 		
-		assertTrue(setimoBook.toString().contains("links: [</book/7>;rel=\"self\"]"));
-		assertEquals("Author Test1", setimoBook.getAuthor());
-		assertEquals("Title Test1", setimoBook.getTitle());
+		assertTrue(setimoBook.toString().contains("links: [</api/book/v1/7>;rel=\"self\"]"));
+		assertEquals("Author Test7", setimoBook.getAuthor());
+		assertEquals("Title Test7", setimoBook.getTitle());
 		assertEquals(25D, setimoBook.getPrice());
-		assertEquals("Date", setimoBook.getLaunchDate());
+		assertNotNull(setimoBook.getLaunchDate());
 		
 	}
 

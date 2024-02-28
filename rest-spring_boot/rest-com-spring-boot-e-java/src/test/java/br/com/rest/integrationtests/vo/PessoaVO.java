@@ -3,8 +3,6 @@ package br.com.rest.integrationtests.vo;
 import java.io.Serializable;
 import java.util.Objects;
 
-import br.com.rest.model.Pessoa;
-
 
 
 public class PessoaVO implements Serializable{
@@ -18,11 +16,15 @@ public class PessoaVO implements Serializable{
 	private String endereco;
 	private String sexo;
 	
-	public PessoaVO() {
-		
-	}
+	
 
 	
+	public PessoaVO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	public Long getId() {
 		return id;
 	}
@@ -65,7 +67,7 @@ public class PessoaVO implements Serializable{
 		this.sexo = sexo;
 	}
 
-/*
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(endereco, id, nome, sexo, sobrenome);
@@ -86,7 +88,9 @@ public class PessoaVO implements Serializable{
 				&& Objects.equals(sobrenome, other.sobrenome);
 	}
 
-	*/
+
+
+	/*
 	
 	
 	@Override
@@ -137,7 +141,7 @@ public class PessoaVO implements Serializable{
 			return false;
 		return true;
 	}
-	
+	*/
 	
 
 	

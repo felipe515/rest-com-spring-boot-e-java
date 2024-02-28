@@ -1,4 +1,4 @@
-package br.com.rest.unittests.mockitoservice;
+package br.com.rest.unittests.mockito.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -52,8 +52,8 @@ class PessoaServicesTest {
 		assertNotNull(result);
 		assertNotNull(result.getKey());
 		assertNotNull(result.getLinks());
-		System.out.println(result.toString());
-		assertTrue(result.toString().contains("links: [</pessoa/1>;rel=\"self\"]"));
+		
+		assertTrue(result.toString().contains("links: [</api/pessoa/v1/1>;rel=\"self\"]"));
 		assertEquals("Addres Test1", result.getEndereco());
 		assertEquals("First Name Test1", result.getNome());
 		assertEquals("Last Name Test1", result.getSobrenome());
@@ -64,7 +64,8 @@ class PessoaServicesTest {
 	@Test
 	void testCriar() {
 		Pessoa entity = input.mockEntity(1);
-
+		entity.setId(1L);
+		
 		Pessoa persisted = entity;
 		persisted.setId(1L);
 		
@@ -74,11 +75,12 @@ class PessoaServicesTest {
 		when(repository.save(entity)).thenReturn(persisted);
 		
 		var result = service.criar(vo);
+		
 		assertNotNull(result);
 		assertNotNull(result.getKey());
 		assertNotNull(result.getLinks());
 		
-		assertTrue(result.toString().contains("links: [</pessoa/1>;rel=\"self\"]"));
+		assertTrue(result.toString().contains("links: [</api/pessoa/v1/1>;rel=\"self\"]"));
 		assertEquals("Addres Test1", result.getEndereco());
 		assertEquals("First Name Test1", result.getNome());
 		assertEquals("Last Name Test1", result.getSobrenome());
@@ -102,7 +104,7 @@ class PessoaServicesTest {
 	@Test
 	void testAtualizar() {
 		Pessoa entity = input.mockEntity(1);
-		entity.setId(1L);
+		
 		
 		Pessoa persisted = entity;
 		persisted.setId(1L);
@@ -119,7 +121,7 @@ class PessoaServicesTest {
 		assertNotNull(result.getKey());
 		assertNotNull(result.getLinks());
 		
-		assertTrue(result.toString().contains("links: [</pessoa/1>;rel=\"self\"]"));
+		assertTrue(result.toString().contains("links: [</api/pessoa/v1/1>;rel=\"self\"]"));
 		assertEquals("Addres Test1", result.getEndereco());
 		assertEquals("First Name Test1", result.getNome());
 		assertEquals("Last Name Test1", result.getSobrenome());
@@ -166,7 +168,7 @@ class PessoaServicesTest {
 		assertNotNull(primeiraPessoa.getKey());
 		assertNotNull(primeiraPessoa.getLinks());
 		
-		assertTrue(primeiraPessoa.toString().contains("links: [</pessoa/1>;rel=\"self\"]"));
+		assertTrue(primeiraPessoa.toString().contains("links: [</api/pessoa/v1/1>;rel=\"self\"]"));
 		assertEquals("Addres Test1", primeiraPessoa.getEndereco());
 		assertEquals("First Name Test1", primeiraPessoa.getNome());
 		assertEquals("Last Name Test1", primeiraPessoa.getSobrenome());
@@ -178,11 +180,11 @@ class PessoaServicesTest {
 		assertNotNull(quartaPessoa.getKey());
 		assertNotNull(quartaPessoa.getLinks());
 		
-		assertTrue(quartaPessoa.toString().contains("links: [</pessoa/4>;rel=\"self\"]"));
+		assertTrue(quartaPessoa.toString().contains("links: [</api/pessoa/v1/4>;rel=\"self\"]"));
 		assertEquals("Addres Test4", quartaPessoa.getEndereco());
 		assertEquals("First Name Test4", quartaPessoa.getNome());
 		assertEquals("Last Name Test4", quartaPessoa.getSobrenome());
-		assertEquals("MAle", quartaPessoa.getSexo());
+		assertEquals("Male", quartaPessoa.getSexo());
 		
 		var setimaPessoa = pessoa.get(7);
 		
@@ -190,7 +192,7 @@ class PessoaServicesTest {
 		assertNotNull(setimaPessoa.getKey());
 		assertNotNull(setimaPessoa.getLinks());
 		
-		assertTrue(setimaPessoa.toString().contains("links: [</pessoa/7>;rel=\"self\"]"));
+		assertTrue(setimaPessoa.toString().contains("links: [</api/pessoa/v1/7>;rel=\"self\"]"));
 		assertEquals("Addres Test7", setimaPessoa.getEndereco());
 		assertEquals("First Name Test7", setimaPessoa.getNome());
 		assertEquals("Last Name Test7", setimaPessoa.getSobrenome());

@@ -13,35 +13,34 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.lifecycle.Startables;
 
 
-
 @ContextConfiguration(initializers = AbstractIntegrationTest.Initializer.class)
 public class AbstractIntegrationTest {
 
 	static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext>{
 		
-		static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.2.0"); // versão do curso 8.0.29
-		
-		private static void starContaners() {
+		static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0.29"); // versão do curso 8.0.29   //minha versao mysql:8.2.0  
+
+		private static void startContainers() {
 			Startables.deepStart(Stream.of(mysql)).join();
 		}
-		
+
 		private static Map<String, String> createConnectionConfiguration() {
 			return Map.of(
-					"spring.datasource.url", mysql.getJdbcUrl(),
-					"spring.datasource.username", mysql.getUsername(),
-					"spring.datasource.password", mysql.getPassword()
-					);
+				"spring.datasource.url", mysql.getJdbcUrl(),
+				"spring.datasource.username", mysql.getUsername(),
+				"spring.datasource.password", mysql.getPassword()
+			);
 		}
-
+		
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		@Override
 		public void initialize(ConfigurableApplicationContext applicationContext) {
-			starContaners();
+			startContainers();
 			ConfigurableEnvironment environment = applicationContext.getEnvironment();
-			MapPropertySource testContainer = new MapPropertySource(
-					"testcontainers",
-					(Map) createConnectionConfiguration());
-			environment.getPropertySources().addFirst(testContainer);
+			MapPropertySource testcontainers = new MapPropertySource(
+				"testcontainers",
+				(Map) createConnectionConfiguration());
+			environment.getPropertySources().addFirst(testcontainers);
 		}
 
 	
