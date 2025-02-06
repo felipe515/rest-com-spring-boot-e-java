@@ -33,6 +33,9 @@ public class Pessoa implements Serializable{
 	@Column(nullable = false)
 	private String sexo;
 	
+	@Column(nullable = false)
+	private Boolean enabled;
+	
 	public Pessoa() {
 		
 	}
@@ -76,9 +79,18 @@ public class Pessoa implements Serializable{
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
+	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(endereco, id, nome, sexo, sobrenome);
+		return Objects.hash(enabled, endereco, id, nome, sexo, sobrenome);
 	}
 
 	@Override
@@ -90,65 +102,11 @@ public class Pessoa implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Pessoa other = (Pessoa) obj;
-		return Objects.equals(endereco, other.endereco) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome) && Objects.equals(sexo, other.sexo)
+		return Objects.equals(enabled, other.enabled) && Objects.equals(endereco, other.endereco)
+				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome) && Objects.equals(sexo, other.sexo)
 				&& Objects.equals(sobrenome, other.sobrenome);
 	}
-
 	
 	
-	/*
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((sexo == null) ? 0 : sexo.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((sobrenome == null) ? 0 : sobrenome.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Pessoa other = (Pessoa) obj;
-		if (endereco == null) {
-			if (other.endereco != null)
-				return false;
-		} else if (!endereco.equals(other.endereco))
-			return false;
-		if (nome == null) {
-			if (other.nome != null)
-				return false;
-		} else if (!nome.equals(other.nome))
-			return false;
-		if (sexo == null) {
-			if (other.sexo != null)
-				return false;
-		} else if (!sexo.equals(other.sexo))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (sobrenome == null) {
-			if (other.sobrenome != null)
-				return false;
-		} else if (!sobrenome.equals(other.sobrenome))
-			return false;
-		return true;
-	}
-	
-	
- */
 	
 }

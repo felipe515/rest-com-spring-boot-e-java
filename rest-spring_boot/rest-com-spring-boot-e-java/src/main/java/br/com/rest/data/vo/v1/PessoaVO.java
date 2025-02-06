@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.github.dozermapper.core.Mapping;
 
+import jakarta.persistence.Column;
+
 
 @JsonPropertyOrder({"Id", "nome", "sobrenome", "endereco", "sexo"})
 public class PessoaVO extends RepresentationModel<PessoaVO> implements Serializable{
@@ -27,12 +29,23 @@ public class PessoaVO extends RepresentationModel<PessoaVO> implements Serializa
 	//@JsonIgnore //para ocultar no postman
 	private String endereco;
 	private String sexo;
+	private Boolean enabled;
 	
 	public PessoaVO() {
 		
 	}
 
 	
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	public Long getKey() {
 		return key;
@@ -78,15 +91,15 @@ public class PessoaVO extends RepresentationModel<PessoaVO> implements Serializa
 		this.sexo = sexo;
 	}
 
-	
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(endereco, key, nome, sexo, sobrenome);
+		result = prime * result + Objects.hash(enabled, endereco, key, nome, sexo, sobrenome);
 		return result;
 	}
-
 
 
 	@Override
@@ -98,13 +111,9 @@ public class PessoaVO extends RepresentationModel<PessoaVO> implements Serializa
 		if (getClass() != obj.getClass())
 			return false;
 		PessoaVO other = (PessoaVO) obj;
-		return Objects.equals(endereco, other.endereco) && Objects.equals(key, other.key)
-				&& Objects.equals(nome, other.nome) && Objects.equals(sexo, other.sexo)
-				&& Objects.equals(sobrenome, other.sobrenome);
+		return Objects.equals(enabled, other.enabled) && Objects.equals(endereco, other.endereco)
+				&& Objects.equals(key, other.key) && Objects.equals(nome, other.nome)
+				&& Objects.equals(sexo, other.sexo) && Objects.equals(sobrenome, other.sobrenome);
 	}
-
-	
-
-	
 	
 }

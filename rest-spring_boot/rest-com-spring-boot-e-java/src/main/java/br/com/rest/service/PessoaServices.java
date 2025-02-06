@@ -4,6 +4,13 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.stereotype.Service;
@@ -15,6 +22,7 @@ import br.com.rest.exception.ResourceNotFoundException;
 import br.com.rest.mapper.DozerMapper;
 import br.com.rest.model.Pessoa;
 import br.com.rest.repositories.PessoaRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PessoaServices {
@@ -24,15 +32,50 @@ public class PessoaServices {
 	@Autowired
 	PessoaRepository repository;
 
+	@Autowired
+	PagedResourcesAssembler<PessoaVO> assembler;
+
 	
-	public List<PessoaVO> findAll() {
+	public PagedModel<EntityModel<PessoaVO>> findAll(Pageable pageable) {
 		logger.info("todas as pessoas");
 	
-		var persons = DozerMapper.parseListObject(repository.findAll(), PessoaVO.class);
-		persons.stream().forEach(p -> p.add(linkTo(methodOn(PessoaController.class).findById(p.getKey())).withSelfRel()));
+		var pessoaPage = repository.findAll(pageable);
 		
-		return persons;
+		var pessoaVosPage = pessoaPage.map(p -> DozerMapper.parseObject(p, PessoaVO.class));
+		pessoaVosPage.map(
+				p -> p.add(
+					linkTo(methodOn(PessoaController.class)
+						.findById(p.getKey())).withSelfRel()));
+		
+		
+		Link link = linkTo(methodOn(PessoaController.class)
+				.findAll(pageable.getPageNumber(),
+						pageable.getPageSize(),
+						"asc")).withSelfRel();
+		return assembler.toModel(pessoaVosPage, link);
 	}
+	
+	
+	
+	public PagedModel<EntityModel<PessoaVO>> findPersonsByName(String firstName, Pageable pageable) {
+		logger.info("todas as pessoas");
+	
+		var pessoaPage = repository.findPersonsByName(firstName, pageable);
+		
+		var pessoaVosPage = pessoaPage.map(p -> DozerMapper.parseObject(p, PessoaVO.class));
+		pessoaVosPage.map(
+				p -> p.add(
+					linkTo(methodOn(PessoaController.class)
+						.findById(p.getKey())).withSelfRel()));
+		
+		
+		Link link = linkTo(methodOn(PessoaController.class)
+				.findAll(pageable.getPageNumber(),
+						pageable.getPageSize(),
+						"asc")).withSelfRel();
+		return assembler.toModel(pessoaVosPage, link);
+	}
+	
 	
 
 
@@ -79,6 +122,19 @@ public class PessoaServices {
 		return vo;
 	}
 	
+	@Transactional
+	public PessoaVO disablePerson(Long id) {
+		
+		logger.info("Disabling uma Pessoa!");
+		
+		repository.disablePerson(id);
+		
+		var entity = repository.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("nenhum registro encontrado para esse ID"));
+		var vo = DozerMapper.parseObject(entity, PessoaVO.class);
+		vo.add(linkTo(methodOn(PessoaController.class).findById(id)).withSelfRel());
+		return vo;
+	}
 	
 	public void delete(Long id) {
 		logger.info("excluindo uma pessoa");

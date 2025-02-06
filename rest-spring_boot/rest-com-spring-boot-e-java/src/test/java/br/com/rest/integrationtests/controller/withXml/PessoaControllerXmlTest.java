@@ -1,8 +1,7 @@
-package br.com.rest.integrationtests.controller.withjson;
+package br.com.rest.integrationtests.controller.withXml;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -20,6 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import br.com.rest.configs.TestConfigs;
 import br.com.rest.integrationtests.testcontainers.AbstractIntegrationTest;
@@ -38,10 +38,10 @@ import org.slf4j.LoggerFactory;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class)
-public class PessoaControllerJsonTest extends AbstractIntegrationTest{
+public class PessoaControllerXmlTest extends AbstractIntegrationTest{
 	
 	private static RequestSpecification specification;
-	private static ObjectMapper objectMapper;
+	private static XmlMapper objectMapper;
 
 	private static PessoaVO person;
 	
@@ -51,7 +51,7 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 	
 	@BeforeAll
 	public static void setup() {
-		objectMapper = new ObjectMapper();
+		objectMapper = new XmlMapper();
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	
 		person = new PessoaVO();
@@ -66,7 +66,8 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 		var accessToken = given()
 				.basePath("/auth/signin")
 					.port(TestConfigs.SERVER_PORT)
-					.contentType(TestConfigs.CONTENT_TYPE_JSON)
+					.contentType(TestConfigs.CONTENT_TYPE_XML)
+					.accept(TestConfigs.CONTENT_TYPE_XML)
 				.body(user)
 					.when()
 				.post()
@@ -92,7 +93,8 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 		mockPerson();
 		
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.body(person)
 					.when()
 					.post()
@@ -113,7 +115,6 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 		assertNotNull(persistedPerson.getSobrenome());
 		assertNotNull(persistedPerson.getEndereco());
 		assertNotNull(persistedPerson.getSexo());
-		assertTrue(persistedPerson.getEnabled());
 		
 		assertTrue(persistedPerson.getId() > 0);
 		
@@ -131,7 +132,8 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 		person.setSobrenome("Andrade");
 		
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.body(person)
 					.when()
 					.post()
@@ -152,7 +154,6 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 		assertNotNull(persistedPerson.getSobrenome());
 		assertNotNull(persistedPerson.getEndereco());
 		assertNotNull(persistedPerson.getSexo());
-		assertTrue(persistedPerson.getEnabled());
 		
 		assertEquals(person.getId(), persistedPerson.getId());
 		
@@ -165,48 +166,12 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 	
 	@Test
 	@Order(3)
-	public void testDisableById() throws JsonMappingException, JsonProcessingException {
-		
-		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
-				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
-					.pathParam("id", person.getId())
-					.when()
-					.patch("{id}")
-				.then()
-					.statusCode(200)
-						.extract()
-						.body()
-							.asString();
-		
-		PessoaVO persistedPerson = objectMapper.readValue(content, PessoaVO.class);
-		person = persistedPerson;
-		
-		assertNotNull(persistedPerson);
-		
-		assertNotNull(persistedPerson.getId());
-		assertNotNull(persistedPerson.getNome());
-		assertNotNull(persistedPerson.getSobrenome());
-		assertNotNull(persistedPerson.getEndereco());
-		assertNotNull(persistedPerson.getSexo());
-		assertFalse(persistedPerson.getEnabled());
-		
-		assertEquals(person.getId(), persistedPerson.getId());
-		
-		assertEquals("Nelson", persistedPerson.getNome());
-		assertEquals("Stallman", persistedPerson.getSobrenome());
-		assertEquals("New York City, New York, US", persistedPerson.getEndereco());
-		assertEquals("Male", persistedPerson.getSexo());
-	}
-	
-	@Test
-	@Order(4)
 	public void testFindById() throws JsonMappingException, JsonProcessingException {
 		mockPerson();
 		
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
-				.header(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.pathParam("id", person.getId())
 					.when()
 					.get("{id}")
@@ -236,11 +201,12 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 	}
 	
 	@Test
-	@Order(5)
+	@Order(4)
 	public void testDelete() throws JsonMappingException, JsonProcessingException {
 	
 				given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.pathParam("id", person.getId())
 					.when()
 					.delete("{id}")
@@ -249,11 +215,12 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 	}
 	
 	@Test
-	@Order(6)
+	@Order(5)
 	public void testFindAll() throws JsonMappingException, JsonProcessingException {
 		
 		var content = given().spec(specification)
-				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
 					.when()
 					.get()
 				.then()
@@ -304,7 +271,6 @@ public class PessoaControllerJsonTest extends AbstractIntegrationTest{
 		person.setSobrenome("Stallman");
 		person.setEndereco("New York City, New York, US");
 		person.setSexo("Male");
-		person.setEnabled(true);
 	}
 }
 		

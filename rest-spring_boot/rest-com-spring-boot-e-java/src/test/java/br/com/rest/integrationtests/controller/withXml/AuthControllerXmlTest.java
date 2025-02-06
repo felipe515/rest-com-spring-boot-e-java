@@ -1,4 +1,4 @@
-package br.com.rest.integrationtests.controller.withjson;
+package br.com.rest.integrationtests.controller.withXml;
 
 import static io.restassured.RestAssured.given;
 
@@ -23,8 +23,8 @@ import br.com.rest.integrationtests.vo.TokenVO;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(OrderAnnotation.class)
-public class AuthControllerJsonTest extends AbstractIntegrationTest{
-	private static TokenVO tokenVO;
+public class AuthControllerXmlTest extends AbstractIntegrationTest{
+	private TokenVO tokenVO;
 	
 
 	@Test
@@ -32,10 +32,11 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest{
 	public void testeSginin() throws JsonMappingException, JsonProcessingException {
 		AccountCredentialsVO user = new AccountCredentialsVO("leandro", "1234");
 		
-		var accessToken = given()
+		//var accessToken = given().
+				 tokenVO = given()
 				.basePath("/auth/signin")
 					.port(TestConfigs.SERVER_PORT)
-					.contentType(TestConfigs.CONTENT_TYPE_JSON)
+					.contentType(TestConfigs.CONTENT_TYPE_XML)
 				.body(user)
 					.when()
 				.post()
@@ -58,7 +59,7 @@ public class AuthControllerJsonTest extends AbstractIntegrationTest{
 		var newTokenVO = given()
 				.basePath("/auth/refresh")
 					.port(TestConfigs.SERVER_PORT)
-					.contentType(TestConfigs.CONTENT_TYPE_JSON)
+					.contentType(TestConfigs.CONTENT_TYPE_XML)
 				.pathParam("username", tokenVO.getUsername())
 				.header(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer" + tokenVO.getRefreshToken())
 					.when()
