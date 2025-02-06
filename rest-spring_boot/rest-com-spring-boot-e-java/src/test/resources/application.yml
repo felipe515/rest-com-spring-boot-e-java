@@ -3,7 +3,7 @@ server:
 cors:
   originPatterns: http://localhost:3000,http://localhost:8080,https://rest.com.br
 file: 
-  upload-dir: /Users/felip\OneDrive\Área de Trabalho\curso rest API\donloads
+  upload-dir: /home/runner/work/rest-com-spring-boot-e-java/UploadDir
 security:
   jwt:
     token:
